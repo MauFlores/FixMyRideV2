@@ -17,7 +17,7 @@ public class MovimientoCarrosGeneral : MonoBehaviour
     void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position,destino.position, velocidad * Time.deltaTime);
-
+    
 
         if(Vector3.Distance(transform.position, destino.position) < 0.1f)
         {
