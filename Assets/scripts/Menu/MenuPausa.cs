@@ -5,18 +5,20 @@ public class MenuPausa : MonoBehaviour
 {
     public GameObject MenuPrincipal;
     public GameObject MenuAjustes;
+    public bool setAutomatico;
+    public bool setManual;
 
     private bool pausado = false;
 
     void Start()
     {
-        MenuPrincipal.SetActive(false);
-        MenuAjustes.SetActive(false);
+        //MenuPrincipal.SetActive(false);
+       // MenuAjustes.SetActive(false);
     }
 
     void Update()
     {
-        /*
+        
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             pausado = !pausado;
@@ -25,7 +27,7 @@ public class MenuPausa : MonoBehaviour
 
             Time.timeScale = pausado ? 0f : 1f;
         }
-        */
+        
     }
 
     void MostrarSolo(GameObject menu)
@@ -72,5 +74,15 @@ public class MenuPausa : MonoBehaviour
         Application.Quit();
 
         Debug.Log("Saliendo del juego...");
+    }
+
+    public void menuJugarDesactivado() 
+    {
+        MenuPrincipal.SetActive(false);
+    }
+
+    public void menuJugarActivado() 
+    {
+        MenuPrincipal.SetActive(true);
     }
 }

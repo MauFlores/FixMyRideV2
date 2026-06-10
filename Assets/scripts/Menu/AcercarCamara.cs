@@ -15,6 +15,7 @@ public class AcercarCamara : MonoBehaviour
     public Transform MenuVisual;
     public Vector3 EscalaPrincipal = Vector3.one;
     public Vector3 EscalaSecundaria = new Vector3(1.2f, 1.2f, 1f);
+    
 
     void Start()
     {
@@ -36,6 +37,7 @@ public class AcercarCamara : MonoBehaviour
         MenuSalir.SetActive(false);
 
         menu.SetActive(true);
+       
     }
 
     // MENU PRINCIPAL
@@ -47,6 +49,7 @@ public class AcercarCamara : MonoBehaviour
         if (MenuVisual != null)
         {
             MenuVisual.localScale = EscalaSecundaria;
+           
         }
     }
 
@@ -93,6 +96,7 @@ public class AcercarCamara : MonoBehaviour
             MenuVisual.localScale = EscalaPrincipal;
         }
     }
+    
 
     public void NivelUno(){SceneManager.LoadScene("Nivel 1");}
     public void NivelDos(){SceneManager.LoadScene("Nivel 2");}
@@ -102,7 +106,7 @@ public class AcercarCamara : MonoBehaviour
 
     // SALIR
 
-    public void exitGame(){Application.Quit();}
+    public void exitGame(){ Application.Quit(); }
 
     public void ConfirmarSalida()
     {

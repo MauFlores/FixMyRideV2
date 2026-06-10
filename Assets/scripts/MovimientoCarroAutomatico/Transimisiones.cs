@@ -4,16 +4,21 @@ public class Transimisiones : MonoBehaviour
 {
     CarInput carInput;
     CarEngine carEngine;
+    //Transimisiones transmisiones;
 
-    int marchas = 1;
+    public int marchas = 1;
 
     bool botonSubirPresionado = false;
     bool botonBajarPresionado = false;
+    bool carroEncendido2 = false;
+    
 
     void Start()
     {
         carInput = GetComponent<CarInput>();
         carEngine = GetComponent<CarEngine>();
+       // transmisiones = GetComponent<Transimisiones>();
+      
     }
 
     void Update()
@@ -25,6 +30,7 @@ public class Transimisiones : MonoBehaviour
         int botonBajarMarcha = carInput.botonPaletaIzquierda;
 
         bool carroPrendido = carInput.carroEncendido;
+
 
         obtenerMarcha();
 
@@ -50,8 +56,7 @@ public class Transimisiones : MonoBehaviour
             Debug.Log("Liberada");
         }
 
-        if (marchas > 6)
-            marchas = 6;
+        if (marchas > 6) marchas = 6;
     }
 
     void bajarMarcha(bool bajar, int botonDeMarchaAbajo)
@@ -69,11 +74,10 @@ public class Transimisiones : MonoBehaviour
             botonBajarPresionado = false;
         }
 
-        if (marchas < 1)
-            marchas = 1;
+        if (marchas < 1) marchas = 1;
     }
 
-    char obtenerMarcha()
+    public char obtenerMarcha()
     {
         char[] cambios = { ' ', 'P', 'R', 'N', 'D', '1', '2' };
 

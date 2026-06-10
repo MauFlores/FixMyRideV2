@@ -2,34 +2,53 @@ using UnityEngine;
 
 public class CarEngine : MonoBehaviour
 {
-
     CarInput carInput;
     Transimisiones transmisiones;
     WheelController wheelController;
+
+    Rigidbody rb;
 
     float direccion;
     float acelerador;
     float freno;
     float clutch;
+
     public float maxSteerAngle = 30f;
     public float motorForce = 1500f;
     public float brakeForce = 3000f;
+
+    public float velocidadActual;
+    public float rpmActual;
+
     void Start()
     {
         carInput = GetComponent<CarInput>();
         transmisiones = GetComponent<Transimisiones>();
         wheelController = GetComponent<WheelController>();
-        
-        
+
+        rb = GetComponentInChildren<Rigidbody>();
     }
 
-    
     void Update()
     {
-     direccion = carInput.direccion;
-     acelerador = carInput.acelerador;
-     freno = carInput.freno;
+        direccion = carInput.direccion;
+        acelerador = carInput.acelerador;
+        freno = carInput.freno;
+
+        // Velocidad
+        if (rb != null)
+        {
+            velocidadActual = rb.linearVelocity.magnitude * 3.6f;
+        }
+
+        // RPM suavizadas
+        float rpmObjetivo =
+            Mathf.Clamp(
+                Mathf.Abs(wheelController.rearLeftWheelCollider.rpm * 15f),0,8000);
+
+        rpmActual = Mathf.Lerp(rpmActual,rpmObjetivo,Time.deltaTime * 4f);
     }
+
     void FixedUpdate()
     {
         transmisiones.cajaDeCambios();
@@ -43,58 +62,32 @@ public class CarEngine : MonoBehaviour
     public void Drive()
     {
         Mover(1);
-        /*
-        //volante
-      float steerAngle = direccion * maxSteerAngle;
-      wheelController.girarRueda(steerAngle);
-      //acelerador
-      float idleTorque = 0.1f * motorForce;
-      float torque = (-idleTorque - acelerador * motorForce);
-      wheelController.torqueDrive(torque);
-      //freno 
-      float frenoTorque = freno * brakeForce;
-      wheelController.FrenoDrive(frenoTorque);
-      */
     }
+
     public void reverse()
     {
         Mover(-1);
-        /*
-      float steerAngle = direccion * maxSteerAngle;
-      wheelController.girarRueda(steerAngle);
-      //acelerador
-      float idleTorque = 0.1f * motorForce;
-      float torque = (idleTorque - acelerador * motorForce);
-      wheelController.torqueDrive(torque);
-      //freno 
-      float frenoTorque = freno * brakeForce;
-      wheelController.FrenoDrive(frenoTorque);  
-      */
     }
-    
+
     public void Neutro()
     {
         wheelController.torqueDrive(0);
     }
 
     void Mover(float multiplicador)
-{
-    float steerAngle = carInput.direccion * maxSteerAngle;
+    {
+        float steerAngle = direccion * maxSteerAngle;
 
-    wheelController.girarRueda(steerAngle);
+        wheelController.girarRueda(steerAngle);
 
-    float torque =
-        multiplicador *
-        (0.1f * motorForce + carInput.acelerador * motorForce);
+        float torque =
+            multiplicador *
+            (0.1f * motorForce + acelerador * motorForce);
 
-    wheelController.torqueDrive(torque);
+        wheelController.torqueDrive(torque);
 
-    float brakeTorque = carInput.freno * brakeForce;
+        float brakeTorque = freno * brakeForce;
 
-    wheelController.FrenoDrive(brakeTorque);
-}
-
-    
-
-   
+        wheelController.FrenoDrive(brakeTorque);
+    }
 }
